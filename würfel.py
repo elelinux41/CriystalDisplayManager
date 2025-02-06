@@ -59,7 +59,6 @@ def tagesroutine(bis):
 def nächtliche_uhr(bis: time):
     def befehle():
         if all(not (start < datetime.today().time() <= end) for (start, end) in priority_times()):
-            mondphase_schalten()
             befehl("theme=1")
     schedule.every(150).seconds.until(bis.isoformat(timespec="seconds")).do(befehle)
     sleep(150)
@@ -111,6 +110,7 @@ def time_diff(t1: time, t2: time, isoformat: bool):
 
 def mitternachtsaufgabe():
     schedule.clear("einmalig")
+    mondphase_schalten()
     sigtim = significant_times()
     schedule.every().day \
         .at(time_diff(sigtim["sunrise"], time(0,1,15), True)) \
